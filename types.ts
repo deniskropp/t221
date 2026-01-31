@@ -36,6 +36,13 @@ export interface KickLangState {
   difficulty: string;
 }
 
+export interface SwarmAgent {
+  name: string;
+  role: string;
+  status: string;
+  color: string;
+}
+
 // Initial/Empty State constants
 export const INITIAL_GRAPH: LearningGraphData = {
   nodes: [],
