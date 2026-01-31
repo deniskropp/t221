@@ -1,0 +1,5 @@
+{
+  "name": "KickLang Adaptive Tutor",
+  "description": "A world-class adaptive tutoring environment powered by Gemini 3. It visualizes knowledge graphs and switches between Socratic and Direct teaching styles dynamically based on the KickLang protocol.",
+  "requestFramePermissions": []
+}
