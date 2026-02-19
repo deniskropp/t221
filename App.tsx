@@ -20,17 +20,18 @@ import {
     Code,
     PenTool,
     Map,
-    Terminal
+    Terminal,
+    Eye
 } from 'lucide-react';
 
 const SWARM_AGENTS: SwarmAgent[] = [
     { name: "AI_Tutor", role: "Instructor", status: "Active", color: "text-indigo-400" },
+    { name: "AR-00L", role: "Visuals", status: "Optimizing UI", color: "text-pink-400 animate-pulse" },
     { name: "WePlan", role: "Strategist", status: "Planning", color: "text-blue-400" },
     { name: "Codein", role: "Implementation", status: "Standby", color: "text-amber-400" },
     { name: "ScopeGuard", role: "Focus", status: "Monitoring", color: "text-emerald-400" },
     { name: "Lyra", role: "Architect", status: "Graphing", color: "text-purple-400" },
     { name: "Dima", role: "Ethics", status: "Oversight", color: "text-red-400" },
-    { name: "AR-00L", role: "Visuals", status: "Standby", color: "text-pink-400" },
     { name: "Kick_La_Metta", role: "Formalizer", status: "Standby", color: "text-slate-400" },
 ];
 
@@ -169,25 +170,25 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen bg-slate-950 text-slate-200 overflow-hidden font-sans">
+    <div className="flex h-screen bg-transparent text-slate-200 overflow-hidden font-sans">
       
       {/* LEFT: Main Chat */}
-      <div className="w-full md:w-3/5 lg:w-1/2 flex flex-col h-full border-r border-slate-800 shadow-2xl z-10">
-        <header className="h-16 border-b border-slate-800 bg-slate-900 flex items-center px-6 justify-between shrink-0">
+      <div className="w-full md:w-3/5 lg:w-1/2 flex flex-col h-full border-r border-slate-700/50 bg-slate-900/60 backdrop-blur-md shadow-2xl z-10">
+        <header className="h-16 border-b border-slate-700/50 bg-slate-900/40 flex items-center px-6 justify-between shrink-0">
             <div className="flex items-center gap-3">
-                <BrainCircuit className="text-indigo-500" />
+                <BrainCircuit className="text-indigo-400 drop-shadow-[0_0_8px_rgba(129,140,248,0.5)]" />
                 <div>
-                    <h2 className="font-semibold text-white leading-tight">{kickLangState.objective}</h2>
-                    <div className="text-xs text-slate-500 flex items-center gap-2">
-                        <span className={`w-2 h-2 rounded-full ${isTyping ? 'bg-indigo-400 animate-pulse' : 'bg-emerald-500'}`}></span>
-                        Fluid Mode Active
+                    <h2 className="font-semibold text-white leading-tight tracking-wide">{kickLangState.objective}</h2>
+                    <div className="text-xs text-slate-400 flex items-center gap-2 font-mono">
+                        <span className={`w-2 h-2 rounded-full ${isTyping ? 'bg-pink-400 animate-pulse shadow-[0_0_8px_rgba(244,114,182,0.8)]' : 'bg-emerald-400 shadow-[0_0_5px_rgba(52,211,153,0.8)]'}`}></span>
+                        Fluid Mode: Active
                     </div>
                 </div>
             </div>
             <div className="flex items-center gap-2">
                 <button 
                     onClick={toggleStyle}
-                    className="text-xs font-mono bg-slate-800 hover:bg-slate-700 border border-slate-700 px-3 py-1.5 rounded transition-colors flex items-center gap-2"
+                    className="text-[10px] font-mono bg-slate-800/80 hover:bg-slate-700 border border-slate-600 px-3 py-1.5 rounded transition-all flex items-center gap-2 uppercase tracking-wider"
                 >
                     <Settings size={12} />
                     ⫻mode:{kickLangState.learningStyle}
@@ -202,10 +203,14 @@ const App: React.FC = () => {
       </div>
 
       {/* RIGHT: Visuals & Tools */}
-      <div className="hidden md:flex md:w-2/5 lg:w-1/2 flex-col h-full bg-slate-950">
+      <div className="hidden md:flex md:w-2/5 lg:w-1/2 flex-col h-full bg-slate-950/40 backdrop-blur-sm">
         
         {/* Top: Knowledge Graph */}
-        <div className="h-3/5 p-4 relative border-b border-slate-800">
+        <div className="h-3/5 p-4 relative border-b border-slate-700/50">
+             <div className="absolute top-4 right-4 z-10 text-[10px] font-mono text-pink-400 flex items-center gap-1 opacity-70">
+                <Eye size={12} />
+                <span>AR-00L Visual Engine</span>
+             </div>
              <KnowledgeGraph 
                 data={graphData} 
                 currentNodeId={kickLangState.currentNodeId}
@@ -214,31 +219,39 @@ const App: React.FC = () => {
         </div>
 
         {/* Bottom: Swarm Agents & Metrics Panel */}
-        <div className="flex-1 bg-slate-900/50 p-6 overflow-y-auto">
-            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <Activity size={14} /> Swarm Status
+        <div className="flex-1 bg-slate-900/40 backdrop-blur-md p-6 overflow-y-auto">
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                <Activity size={14} className="text-indigo-400" /> Swarm Logic
             </h3>
             
             <div className="grid grid-cols-2 gap-3">
                 {SWARM_AGENTS.map(agent => (
-                    <div key={agent.name} className="bg-slate-800/50 p-3 rounded border border-slate-700 hover:border-slate-600 transition-colors">
+                    <div key={agent.name} className={`
+                        p-3 rounded border border-slate-700/50 transition-all duration-300
+                        ${agent.name === 'AR-00L' ? 'bg-pink-900/10 border-pink-500/30 shadow-[0_0_15px_rgba(236,72,153,0.1)]' : 'bg-slate-800/40 hover:bg-slate-800/60'}
+                    `}>
                         <div className={`flex items-center gap-2 mb-1 ${agent.color}`}>
                             {getAgentIcon(agent.name)}
                             <span className="font-bold text-xs">{agent.name}</span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span className="text-[10px] text-slate-400">{agent.role}</span>
-                            <span className="text-[10px] font-mono text-slate-600 bg-slate-900 px-1.5 py-0.5 rounded">{agent.status}</span>
+                            <span className="text-[10px] text-slate-400 font-medium">{agent.role}</span>
+                            <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${agent.name === 'AR-00L' ? 'bg-pink-500/20 text-pink-300' : 'bg-slate-900/50 text-slate-500'}`}>
+                                {agent.status}
+                            </span>
                         </div>
                     </div>
                 ))}
             </div>
             
-            <div className="mt-6 border-t border-slate-800 pt-4">
-                <h4 className="text-xs font-mono text-slate-500 mb-2">⫻data/metrics</h4>
+            <div className="mt-6 border-t border-slate-700/50 pt-4">
+                <h4 className="text-xs font-mono text-slate-500 mb-2 flex justify-between">
+                    <span>⫻data/metrics</span>
+                    <span className="text-indigo-500">v2.1 Stable</span>
+                </h4>
                 <div className="flex justify-between items-center text-[10px] text-slate-400 font-mono mb-1">
                     <span>Ethics Compliance (Dima)</span>
-                    <span className="text-emerald-500">Pass</span>
+                    <span className="text-emerald-400 drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]">Pass</span>
                 </div>
                 <div className="flex justify-between items-center text-[10px] text-slate-400 font-mono">
                     <span>Graph Traversal (Lyra)</span>
